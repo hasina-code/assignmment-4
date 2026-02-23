@@ -17,6 +17,7 @@ const rejectedFilterBtn = document.getElementById('rejected-filter-btn');
 
 
 // Sections
+
 const allCardSection = document.getElementById('allCards');
 //console.log(allcardSection.childen.length);
 const mainContainer = document.querySelector('main');
@@ -24,8 +25,6 @@ const mainContainer = document.querySelector('main');
 const filterSection = document.getElementById('filtered-section');
 const noJobsSection = document.querySelector('.empty-card');
 const availableJobsCounter = document.querySelector('.flex.justify-between p.text-sm.text-gray-500');
-
-
 
 
 
@@ -55,6 +54,7 @@ noJobsSection.style.display = 'block';
 }
 }
 }
+
 calculateCount();
 
 
@@ -132,6 +132,19 @@ if (currentStatus === 'rejected-filter-btn') renderRejected();
 
 
 calculateCount();
+}
+
+
+if (event.target.closest('button') && event.target.closest('button').querySelector('i.fa-trash-can')) {
+const card = event.target.closest('.card');
+const jobTitle = card.querySelector('h3').innerText;
+
+card.remove();
+interviewList = interviewList.filter(j => j !== jobTitle);
+rejectedList = rejectedList.filter(j => j !== jobTitle);
+
+calculateCount();
+if (currentStatus !== 'all') toggleStyle(currentStatus);
 }
 
 });
