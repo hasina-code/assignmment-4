@@ -35,6 +35,25 @@ function calculateCount(){
 total.innerText = allCardSection.children.length;
 interviewCount.innerText = interviewList.length;
 rejectedCount.innerText = rejectedList.length;
+
+if (!availableJobsCounter) return;
+
+if (currentStatus === 'all') {
+availableJobsCounter.innerText = `${allCardSection.children.length} jobs`;
+noJobsSection.style.display = 'none';
+} else {
+let currentList = currentStatus === 'interview-filter-btn' ? interviewList : rejectedList;
+
+// count always 8 jobs, show N of 8 if data exists
+
+if (currentList.length > 0) {
+availableJobsCounter.innerText = `${currentList.length} of ${allCardSection.children.length} jobs`;
+noJobsSection.style.display = 'none';
+} else {
+availableJobsCounter.innerText = `${allCardSection.children.length} jobs`;
+noJobsSection.style.display = 'block';
+}
+}
 }
 calculateCount();
 
@@ -118,7 +137,7 @@ calculateCount();
 });
 
 
-//===== Step 3: Render Interview =====
+//  Render Interview
 function renderInterview() {
 filterSection.innerHTML = '';
 if (interviewList.length === 0) {
