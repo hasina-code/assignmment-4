@@ -17,12 +17,19 @@ const allCardSection = document.getElementById('allCards');
 //console.log(allcardSection.childen.length);
 const mainContainer = document.querySelector('main');
 // console.log(mainContainer);
+const filterSection = document.getElementById('filtered-section');
+const noJobsSection = document.querySelector('.empty-card');
+const availableJobsCounter = document.querySelector('.flex.justify-between p.text-sm.text-gray-500');
     
+
+
 
 //     Filter buttons 
 const allFilterBtn = document.getElementById('all-filter-btn');
 const interviewFilterBtn = document.getElementById('interview-filter-btn');
 const rejectedFilterBtn = document.getElementById('rejected-filter-btn');
+
+
 
 //    Update Available Jobs count 
 
@@ -30,12 +37,14 @@ function calculateCount(){
     total.innerText = allCardSection.children.length;
     interviewCount.innerText = interviewList.length;
     rejectedCount.innerText = rejectedList.length;
-
+  
     
 }
 
  calculateCount();
 
+
+ 
 
 
  //    Toggle Filter Style 
@@ -57,12 +66,27 @@ function toggleStyle(id) {
     selected.classList.remove('bg-gray-300');
     selected.classList.add('bg-blue-600', 'text-white');
 
+    if (id === 'interview-filter-btn') {
+        allCardSection.classList.add('hidden');
+        filterSection.classList.remove('hidden');
+        renderInterview();
+    } else if (id === 'rejected-filter-btn') {
+        allCardSection.classList.add('hidden');
+        filterSection.classList.remove('hidden');
+        renderRejected();
+    } else {
+        allCardSection.classList.remove('hidden');
+        filterSection.classList.add('hidden');
+        noJobsSection.style.display = 'none';
+    }
+
+
     calculateCount();
 }
 
 
 
-// ===== Step 2: Event Delegation =====
+//      Event Delegation 
 mainContainer.addEventListener('click', function (event) {
     if (event.target.innerText === 'INTERVIEW') {
         const card = event.target.closest('.card');
@@ -94,9 +118,16 @@ mainContainer.addEventListener('click', function (event) {
 
         if (currentStatus === 'interview-filter-btn') renderInterview();
         if (currentStatus === 'rejected-filter-btn') renderRejected();
+        
 
         calculateCount();
     }
 
+ 
+   
+
    
 });
+
+
+calculateCount();
