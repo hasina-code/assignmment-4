@@ -8,7 +8,7 @@ let currentStatus = 'all';
 let total = document.getElementById('total-count');
 let interviewCount = document.getElementById('interview-count');
 let rejectedCount = document.getElementById('rejected-count');
-console.log(total,interviewCount,rejectedCount);
+//console.log(total,interviewCount,rejectedCount);
 
 
 
@@ -41,7 +41,7 @@ function calculateCount(){
  //    Toggle Filter Style 
  
 function toggleStyle(id) {
-    console.log("click")
+   // console.log("click")
     allFilterBtn.classList.add('bg-gray-300');
     interviewFilterBtn.classList.add('bg-gray-300');
     rejectedFilterBtn.classList.add('bg-gray-300');
@@ -51,10 +51,52 @@ function toggleStyle(id) {
     rejectedFilterBtn.classList.remove('bg-blue-600', 'text-white');
 
     const selected = document.getElementById(id);
-    currentStatus = id;
-
+    currentStatus = id;  
+   //  console.log(currentStatus);
+    // console.log(selected);
     selected.classList.remove('bg-gray-300');
     selected.classList.add('bg-blue-600', 'text-white');
 
     calculateCount();
 }
+
+
+
+// ===== Step 2: Event Delegation =====
+mainContainer.addEventListener('click', function (event) {
+    if (event.target.innerText === 'INTERVIEW') {
+        const card = event.target.closest('.card');
+        const statusSpan = card.querySelector('span');
+        statusSpan.innerText = 'INTERVIEW';
+        statusSpan.classList.remove('bg-gray-100', 'text-red-600');
+        statusSpan.classList.add('bg-green-100', 'text-green-600');
+
+        const jobTitle = card.querySelector('h3').innerText;
+        if (!interviewList.includes(jobTitle)) interviewList.push(jobTitle);
+        rejectedList = rejectedList.filter(j => j !== jobTitle);
+
+        if (currentStatus === 'rejected-filter-btn') renderRejected();
+        if (currentStatus === 'interview-filter-btn') renderInterview();
+
+        calculateCount();
+    }
+
+    if (event.target.innerText === 'REJECTED') {
+        const card = event.target.closest('.card');
+        const statusSpan = card.querySelector('span');
+        statusSpan.innerText = 'REJECTED';
+        statusSpan.classList.remove('bg-gray-100', 'text-green-600');
+        statusSpan.classList.add('bg-red-100', 'text-red-600');
+
+        const jobTitle = card.querySelector('h3').innerText;
+        if (!rejectedList.includes(jobTitle)) rejectedList.push(jobTitle);
+        interviewList = interviewList.filter(j => j !== jobTitle);
+
+        if (currentStatus === 'interview-filter-btn') renderInterview();
+        if (currentStatus === 'rejected-filter-btn') renderRejected();
+
+        calculateCount();
+    }
+
+   
+});
